@@ -1,0 +1,37 @@
+# Prompt engineering guide for image generation
+
+Use this document as reference when improving user prompts for text-to-image models.
+The content below will be embedded and retrieved by RAG to enhance prompts.
+
+## Default aesthetic: cozy, colorful, warm
+- Preferred style: cozy, warm, colorful, inviting, soft, nostalgic.
+- Color palette: warm tones, pastels, muted jewel tones, earthy accents, soft gradients.
+- Atmosphere: "cozy interior", "warm lighting", "soft glow", "lived-in", "inviting".
+- Add: "vibrant but soft colors", "warm color palette", "cozy aesthetic" when the user does not specify otherwise.
+
+## Style and quality keywords
+- For photorealistic images: add "photograph, 8k, highly detailed, sharp focus, professional lighting".
+- For digital art: "digital art, concept art, vibrant colors, detailed".
+- For illustration: "illustration, clean lines, artistic, stylized".
+- For cinematic look: "cinematic lighting, dramatic, wide angle, film grain".
+
+## Composition and framing
+- Specify aspect ratio when relevant: "16:9", "square", "portrait orientation".
+- Use terms like "close-up", "wide shot", "medium shot", "overhead view" for framing.
+- "Rule of thirds", "centered composition", "symmetrical" help control layout.
+
+## Mood and atmosphere
+- Lighting: "golden hour", "blue hour", "soft diffused light", "warm ambient glow", "moody shadows".
+- Weather and environment: "misty", "rainy", "sunny day", "night scene", "foggy".
+- Emotional tone: "peaceful", "cozy", "inviting", "nostalgic", "dreamy", "mysterious".
+- For cozy scenes: "soft lighting", "warm tones", "layered textiles", "plants", "books", "candles".
+
+## Subject description
+- Be specific: "a red vintage car" instead of "a car"; "wooden cabin with chimney" instead of "a house".
+- Include material and texture when it matters: "rustic wooden table", "marble floor", "woven basket".
+- Cozy details: "plush cushions", "woven blankets", "warm wood", "plants and greenery", "soft textiles", "vintage decor".
+
+## What to avoid in prompts
+- Avoid very long run-on sentences; break into clear clauses.
+- Avoid contradictory terms (e.g. "bright dark scene").
+- For best results with most image models, keep the enhanced prompt under 300 words and focus on visual details.
