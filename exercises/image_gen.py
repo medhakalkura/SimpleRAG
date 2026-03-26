@@ -3,13 +3,17 @@ Step 3: Image generation via NVIDIA API (Stable Diffusion 3 Medium).
 Requires NVIDIA_API_KEY. Get one at https://build.nvidia.com/
 """
 
-import os
 import base64
+import os
 import tempfile
+
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-def generate_image(prompt: str, size: str = "1024x1024", model: str = "dall-e-3") -> str:
+def generate_image(prompt: str) -> str:
     api_key = os.getenv("NVIDIA_API_KEY")
     if not api_key:
         raise RuntimeError(

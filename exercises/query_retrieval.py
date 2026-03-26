@@ -29,7 +29,6 @@ def retrieve(vector_store, query: str, k: int = 3) -> list[str]:
     Hint: vector_store.similarity_search(query, k=k)
     """
     return vector_store.similarity_search(query, k=k)
-    raise NotImplementedError
 
 
 def main():

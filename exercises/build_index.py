@@ -2,7 +2,7 @@
 Exercise 3: Build a vector store from documents.
 
 TODO: Implement build_index. Load .txt files, chunk, embed, store in Chroma.
-Run with: python exercises/03_build_index.py
+Run with: python exercises/build_index.py
 """
 
 from pathlib import Path

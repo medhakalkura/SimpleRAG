@@ -6,13 +6,18 @@ Run with: python exercises/05_rag_chain.py "cozy coffee shop in the rain"
 """
 
 import sys
-from pathlib import Path
-from query_retrieval import load_store, retrieve
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage
-from image_gen import generate_image
-import subprocess
 import os
+import subprocess
+from pathlib import Path
+
+from dotenv import load_dotenv
+from langchain_anthropic import ChatAnthropic
+from langchain_core.messages import HumanMessage, SystemMessage
+
+from image_gen import generate_image
+from query_retrieval import load_store, retrieve
+
+load_dotenv()
 
 def enhance_prompt(user_query: str) -> str:
     # 1. Load vector store

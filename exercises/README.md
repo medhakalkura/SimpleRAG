@@ -1,75 +1,104 @@
-# RAG Coding Exercises
+# RAG coding exercises
 
-Work through these in order. Each file has **TODOs** — you implement the logic.  
-Use the docstrings and hints; avoid peeking at `src/` until you're stuck.
+Work through these **in order**. Each file has **TODOs** (some may already be filled in as you iterate) — implement and understand the logic.
 
 ---
 
-## Exercise 1: `01_embeddings.py`
-**Goal:** Understand embeddings by calling an embedding model.
+## Exercise 1: `embeddings.py`
 
-- Load a sample string and get its embedding vector.
+**Goal:** Understand embeddings by calling a local embedding model.
+
+- Load sample strings and get embedding vectors.
 - Compare two strings: are their embeddings similar?
-- Print the shape of the vector (how many dimensions?).
+- Print the vector size (dimensions).
 
-**Hints:** Use `langchain_openai.OpenAIEmbeddings` or `langchain_community.embeddings.HuggingFaceEmbeddings`. Call `.embed_query("text")` and `.embed_documents(["a", "b"])`.
+**Hints:** This repo uses `sentence_transformers` / a small LangChain-compatible wrapper in the same file. Alternatively you can experiment with `langchain_openai.OpenAIEmbeddings` or `langchain_community.embeddings.HuggingFaceEmbeddings` and set `OPENAI_API_KEY` if you choose that path.
+
+**Run:** `python exercises/embeddings.py`
 
 ---
 
-## Exercise 2: `02_chunking.py`
+## Exercise 2: `chunking.py`
+
 **Goal:** Split a document into chunks.
 
 - Load `data/prompt_guide.txt`.
-- Implement a simple chunker: split by `chunk_size` chars with `chunk_overlap` overlap.
-- Return a list of strings. No LangChain yet — just plain Python.
+- Implement overlapping chunks: `chunk_size` and `chunk_overlap`.
+- Return a list of strings (plain Python is fine).
 
-**Example:** `chunk("hello world", size=5, overlap=2)` → `["hello", "lo wo", "world"]`
+**Example:** `chunk_text("hello world", chunk_size=5, chunk_overlap=2)` → something like `["hello", "lo wo", "world"]` depending on your rules.
+
+**Run:** `python exercises/chunking.py`
 
 ---
 
-## Exercise 3: `03_build_index.py`
+## Exercise 3: `build_index.py`
+
 **Goal:** Build a vector store from your documents.
 
 - Load all `.txt` files from `data/`.
-- Split each into chunks (use your chunker or LangChain's `RecursiveCharacterTextSplitter`).
-- Embed each chunk.
-- Store in Chroma. Persist to `chroma_db/`.
+- Split into chunks (your chunker or LangChain’s `RecursiveCharacterTextSplitter`).
+- Embed each chunk and store in **Chroma**, persisted under `chroma_db/`.
 
-**Implement:** `build_index(data_dir, persist_dir)` — returns the vector store.
+**Implement / verify:** `build_index(data_dir, persist_dir)` returns the vector store.
+
+**Run:** `python exercises/build_index.py`
 
 ---
 
-## Exercise 4: `04_query_retrieval.py`
-**Goal:** Query the vector store and see retrieved chunks.
+## Exercise 4: `query_retrieval.py`
+
+**Goal:** Query the vector store and inspect retrieved chunks.
 
 - Load the vector store from `chroma_db/`.
-- Given a user query string, return the top-k most similar chunks.
-- Print them so you can verify they make sense.
+- Given a query string, return the top‑k most similar chunks.
+- Print results to verify they make sense.
 
-**Implement:** `retrieve(query: str, k: int = 3) -> list[str]`
+**API to aim for:** `retrieve(vector_store, query, k=3)` (see file for exact signature).
+
+**Run:** `python exercises/query_retrieval.py "your query"`
 
 ---
 
-## Exercise 5: `05_rag_chain.py`
-**Goal:** Wire retrieval + LLM into a simple chain.
+## Exercise 5: `rag_chain.py`
+
+**Goal:** Wire retrieval + LLM into a short pipeline.
 
 - Retrieve context for the user query.
-- Build a prompt: `"Context: {context}\n\nUser: {query}\n\nWrite an improved image prompt:"`
-- Call Claude with that prompt.
-- Return the enhanced prompt.
+- Build a prompt that includes context + user idea.
+- Call **Claude** and return an improved image prompt.
+- Optionally call **`image_gen.py`** (needs `NVIDIA_API_KEY`).
 
-**Implement:** `enhance_prompt(user_query: str) -> str`
+**Run:** `python exercises/rag_chain.py "cozy coffee shop in the rain"`
 
 ---
 
-## How to run
+## Environment variables
 
-From project root:
+Set these in your shell or a **`.env`** file (never commit secrets):
+
+| Variable | Used by |
+|----------|---------|
+| `ANTHROPIC_API_KEY` | `rag_chain.py` (Claude) |
+| `NVIDIA_API_KEY` | `image_gen.py` / full chain in `rag_chain.py` |
+
+Optional: `OPENAI_API_KEY` if you switch embeddings to OpenAI.
+
+See **`.env.example`** in the project root for a template.
+
+---
+
+## How to run (from project root)
+
 ```bash
-cd /Users/medhak/Projects/RAG
-source venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate    # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python exercises/01_embeddings.py
-```
+cp .env.example .env         # then edit .env with your keys
 
-Set env vars: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY` (see `.env.example`).
+python exercises/embeddings.py
+python exercises/chunking.py
+python exercises/build_index.py
+python exercises/query_retrieval.py "test query"
+python exercises/rag_chain.py "your image idea"
+```

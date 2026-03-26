@@ -1,17 +1,12 @@
 """
 Exercise 1: Embeddings — get a vector for text and compare similarity.
 
-TODO: Implement the functions below. Run with: python exercises/01_embeddings.py
+TODO: Implement the functions below. Run with: python exercises/embeddings.py
 """
 
-import os
-from langchain_huggingface import HuggingFaceEmbeddings
 from sentence_transformers import SentenceTransformer
 from langchain_core.embeddings import Embeddings
 import numpy as np
-
-# load HF model once
-_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
 class HFSentenceTransformerEmbeddings(Embeddings):
     def __init__(self):
